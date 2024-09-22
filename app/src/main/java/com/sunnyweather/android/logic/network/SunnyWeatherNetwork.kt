@@ -25,7 +25,6 @@ object SunnyWeatherNetwork {
             enqueue(object: Callback<T>{
                 override fun onResponse(call: Call<T>, response: Response<T>) {
                     val body = response.body()
-                    Log.d("tianqi", body.toString())
                     if(body != null) continuation.resume(body)
                     else continuation.resumeWithException(
                         RuntimeException("response body is null")
@@ -33,7 +32,6 @@ object SunnyWeatherNetwork {
                 }
 
                 override fun onFailure(call: Call<T>, t: Throwable) {
-                    Log.d("tianqi", "失败")
                     continuation.resumeWithException(t)
                 }
             })

@@ -43,18 +43,17 @@ class PlaceFragment : Fragment() {
             if(content.isNotEmpty()){
                 viewModel.searchPlaces(content)
             } else {
-                binding?.recyclerView?.visibility = View.VISIBLE
-                binding?.bgImageView?.visibility = View.GONE
+                binding?.recyclerView?.visibility = View.GONE
+                binding?.bgImageView?.visibility = View.VISIBLE
                 viewModel.placeList.clear()
                 adapter.notifyDataSetChanged()
             }
         }
         viewModel.placeLiveData.observe(viewLifecycleOwner, Observer { result ->
             val places = result.getOrNull()
-            Log.d("PlaceFragment", places?.get(1)?.name?:"空")
             if(places != null){
-                binding?.recyclerView?.visibility = View.GONE
-                binding?.bgImageView?.visibility = View.VISIBLE
+                binding?.recyclerView?.visibility = View.VISIBLE
+                binding?.bgImageView?.visibility = View.GONE
                 viewModel.placeList.clear()
                 viewModel.placeList.addAll(places)
                 adapter.notifyDataSetChanged()

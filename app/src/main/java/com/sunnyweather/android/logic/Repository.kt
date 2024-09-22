@@ -11,11 +11,9 @@ object Repository {
         val result = try {
             val placeResponse = SunnyWeatherNetwork.searchPlaces(query)
             if(placeResponse.status == "ok"){
-                Log.d("Repository", "status = ok")
                 val places = placeResponse.places
                 Result.success(places)
             } else{
-                Log.d("Repository", "失败aa")
                 Result.failure(RuntimeException("response status is ${placeResponse.status}"))
             }
         } catch (e: Exception){
