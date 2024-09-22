@@ -10,12 +10,12 @@ object Repository {
     fun searchPlace(query: String) = liveData(Dispatchers.IO){
         val result = try {
             val placeResponse = SunnyWeatherNetwork.searchPlaces(query)
-            Log.d("tianqi", "失败aaaaaa")
             if(placeResponse.status == "ok"){
+                Log.d("Repository", "status = ok")
                 val places = placeResponse.places
                 Result.success(places)
             } else{
-                Log.d("tianqi", "失败aa")
+                Log.d("Repository", "失败aa")
                 Result.failure(RuntimeException("response status is ${placeResponse.status}"))
             }
         } catch (e: Exception){

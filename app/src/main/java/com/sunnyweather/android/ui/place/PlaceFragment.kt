@@ -40,8 +40,6 @@ class PlaceFragment : Fragment() {
         binding?.recyclerView?.adapter = adapter
         binding?.searchPlaceEdit?.addTextChangedListener { editable ->
             val content = editable.toString()
-            Log.d("chufa", "文字监听")
-            Log.d("chufa", content)
             if(content.isNotEmpty()){
                 viewModel.searchPlaces(content)
             } else {
@@ -53,6 +51,7 @@ class PlaceFragment : Fragment() {
         }
         viewModel.placeLiveData.observe(viewLifecycleOwner, Observer { result ->
             val places = result.getOrNull()
+            Log.d("PlaceFragment", places?.get(1)?.name?:"空")
             if(places != null){
                 binding?.recyclerView?.visibility = View.GONE
                 binding?.bgImageView?.visibility = View.VISIBLE
