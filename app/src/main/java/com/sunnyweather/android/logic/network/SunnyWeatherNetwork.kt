@@ -1,0 +1,43 @@
+package com.sunnyweather.android.logic.network
+
+import android.util.Log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.await
+import retrofit2.http.Query
+import java.sql.Time
+import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+
+object SunnyWeatherNetwork {
+    private val placeService = ServiceCreator.create<PlaceService>()
+
+    suspend fun searchPlaces(query: String)=placeService.searchPlaces(query).await()
+
+    private suspend fun <T> Call<T>.await(): T{
+        return suspendCoroutine { continuation ->
+            enqueue(object: Callback<T>{
+                override fun onResponse(call: Call<T>, response: Response<T>) {
+                    val body = response.body()
+                    Log.d("tianqi", body.toString())
+                    if(body != null) continuation.resume(body)
+                    else continuation.resumeWithException(
+                        RuntimeException("response body is null")
+                    )
+                }
+
+                override fun onFailure(call: Call<T>, t: Throwable) {
+                    Log.d("tianqi", "失败")
+                    continuation.resumeWithException(t)
+                }
+            })
+        }
+    }
+}
+
